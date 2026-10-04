@@ -1,0 +1,10 @@
+import kagglehub
+
+# Download latest version
+path = kagglehub.dataset_download("kasikrit/att-database-of-faces", output_dir="./datasets/att-database-of-faces")
+
+print("Path to dataset files:", path)
+
+import math
+
+a = math.sqrt(1,2)

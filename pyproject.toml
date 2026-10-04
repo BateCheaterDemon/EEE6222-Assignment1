@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "att-db-faces"
+version = "0.1.0"
+description = "EE6222 Assignment 1: PCA / LDA dimensionality reduction + classification on ORL/AT&T faces"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Your Name", email = "you@example.com" }]
+keywords = ["pca", "lda", "face-recognition", "ee6222"]
+
+# 运行时依赖：主流程（读图→PCA→LDA→分类→扫 m→存 CSV）只需要这些
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",        # scipy.linalg.eigh 的广义形式在 1.10+ 行为稳定
+]
+
+[project.optional-dependencies]
+# 画图：均值脸、eigenface、曲线。只跑 m 扫描/存 CSV 时不装也能过
+plot = [
+    "matplotlib>=3.7",
+]
+# 读 PGM 自检 / montage 生成（其实手写也能读，Pillow 只是保险 + 便于对比）
+io = [
+    "Pillow>=10.0",
+]
+# 开发：测试 + 代码风格
+dev = [
+    "pytest>=7.4",
+    "ruff>=0.4",
+]
+
+[project.scripts]
+# 装好后可直接 `ee6222-run`，不用记 python -m 路径
+ee6222-run = "src.run_experiment:main"
+
+[tool.setuptools]
+# 只打包 src 下的代码；datasets 是数据，不进 wheel
+package-dir = { "" = "." }
+packages = ["src"]
+
+[tool.setuptools.package-data]
+# 若你愿意在包内放小样例数据/配置模板，可在这里声明
+"src" = ["*.json", "*.toml"]
+
+# ---------- 工具配置 ----------
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+# E/F 基础错误，I 排序 import；先别开太严，手写作业会被格式噪音淹没
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+# 手写实验代码，先别上 strict
