@@ -25,8 +25,8 @@ def main():
     assert len(set(tr) & set(te)) == 0 and len(tr) + len(te) == 400
     print(f"split: train={len(tr)}, test={len(te)}")
 
-    mu, Xc = center_train(X[tr])
-    Xc_tr, Xc_te = X[tr] - mu, X[te] - mu
+    mu, Xc_tr = center_train(X[tr])
+    Xc_te = X[te] - mu
     y_tr, y_te = y[tr], y[te]
 
     # PCA
@@ -74,7 +74,7 @@ def main():
     settings = dict(seed=C.SEED, n_train_per_class=C.N_TRAIN_PER_CLASS,
                     hist_eq=args.hist_eq, m_pca_max=C.M_PCA_MAX,
                     m_lda_max=C.M_LDA_MAX, lda_pca_stage=C.LDA_PCA_STAGE,
-                    ridge=C.RIDGE)
+                    ridge=C.RIDGE, shuffle_acc=round(float(acc_shuf), 4))
     (C.RES_DIR / "settings.json").write_text(json.dumps(settings, indent=2))
     print("done.")
 

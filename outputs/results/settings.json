@@ -4,6 +4,7 @@
   "hist_eq": true,
   "m_pca_max": 199,
   "m_lda_max": 39,
-  "lda_pca_stage": 160,
-  "ridge": 1e-06
+  "lda_pca_stage": 100,
+  "ridge": 1e-06,
+  "shuffle_acc": 0.03
 }

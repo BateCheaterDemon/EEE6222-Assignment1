@@ -48,7 +48,7 @@ class LDA:
             diff_mu = (mu_c - mu).reshape(-1, 1)
             S_B += Zc.shape[0] * (diff_mu @ diff_mu.T)  
 
-        S_W += self.ridge * np.eye(d)  # 正则化
+        S_W += self.ridge * np.trace(S_W) * np.eye(d)  # 尺度化正则（与分类器一致）
 
         vals, vecs = eigh(S_B, S_W)
         vals, vecs = vals[::-1], vecs[:, ::-1]  # 按特征值从大到小排序

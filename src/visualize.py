@@ -19,15 +19,15 @@ def save_mean_and_eigenfaces(mean_face,comps, path, k=15):
         v = v.reshape((IMG_H, IMG_W))
         v = (v - v.min()) / (v.max() - v.min() + 1e-8)
         return v
-    fig, axes = plt.subplots(2, 8, figsize=(16, 4))
-    axes[0, 0].imshow(mean_face.reshape((IMG_H, IMG_W)), cmap="gray")
-    axes[0, 0].set_title("mean")
-    for ax in axes[0, 1:]:
+    ncols = 8
+    fig, axes = plt.subplots(2, ncols, figsize=(2 * ncols, 4))
+    slots = axes.ravel()  # 2x8=16 个槽位：均值 + 前 k 张 eigenface
+    slots[0].imshow(mean_face.reshape((IMG_H, IMG_W)), cmap="gray")
+    slots[0].set_title("mean")
+    for i in range(k):
+        slots[i + 1].imshow(norm_img(comps[i]), cmap="gray")
+    for ax in slots:
         ax.axis("off")
-    for i, ax in enumerate(axes[1]):
-        ax.imshow(norm_img(comps[i]), cmap="gray")
-        ax.axis("off")
-    axes[0, 0].axis("off")
     fig.tight_layout()
     fig.savefig(path, dpi=200)
     plt.close(fig)
